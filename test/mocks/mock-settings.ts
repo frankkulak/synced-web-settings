@@ -1,5 +1,6 @@
 export default interface MockSettings {
   boolean: boolean;
+  number: number;
   string: string;
-  numbers: number[];
+  json: { numbers: number[]; };
 }

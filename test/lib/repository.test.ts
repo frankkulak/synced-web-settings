@@ -19,13 +19,17 @@ describe("SettingsRespository", () => {
           type: types.StoredBoolean,
           defaultValue: false
         },
+        number: {
+          type: types.StoredNumber,
+          defaultValue: 0
+        },
         string: {
           type: types.StoredString,
           defaultValue: ""
         },
-        numbers: {
+        json: {
           type: types.StoredJson,
-          defaultValue: []
+          defaultValue: { numbers: [] }
         }
       },
     });
