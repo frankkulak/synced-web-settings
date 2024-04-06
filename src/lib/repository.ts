@@ -29,7 +29,7 @@ export class SettingsRespository<SettingsType extends object> {
         return target[prop].decode(raw);
       },
       set(target, prop: string, value: any) {
-        const raw = target[prop].encode(prop, value) as string;
+        const raw = target[prop].encode(value) as string;
         options.storage.setItem(storageKey(prop), raw);
         target[prop].handleChange(value);
         subManager.notifySubscribers(prop as keyof SettingsType, value);
