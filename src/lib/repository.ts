@@ -1,13 +1,24 @@
 import { StoredSettings, StoredSettingsBuilder } from "./stored-types";
 import { SubscriptionManager } from "./subscriptions";
 
+/**
+ * Repository of settings that are synced with the same storage container.
+ */
 export class SettingsRespository<SettingsType extends object> {
+  /** Settings synced with storage. */
   public readonly settings: SettingsType;
+  /** Subscription manager for these settings. */
   public readonly subscriptions = new SubscriptionManager<SettingsType>();
 
+  /**
+   * @param options Configurable options
+   */
   constructor(options: {
+    /** String to append before setting names for keys in storage. */
     prefix?: string;
+    /** Storage container that will sync with these settings. */
     storage: Storage;
+    /** Specs for settings. */
     settings: StoredSettingsBuilder<SettingsType>;
   }) {
     // creating settings object

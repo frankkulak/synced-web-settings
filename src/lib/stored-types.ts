@@ -1,25 +1,49 @@
 //#region Base Types
 
-export type OnChangeCallback<T> = (value: T) => void;
+type OnChangeCallback<T> = (value: T) => void;
 
+/**
+ * Spec for a setting that can sync with storage.
+ */
 export abstract class StoredSetting<T> {
   constructor(
     protected readonly _defaultValue: T,
     private readonly _onChangeCallbacks?: readonly OnChangeCallback<T>[]
   ) { }
 
+  /**
+   * Decodes the given string as a type compatible with this setting. If value
+   * is null or undefined, then the default value is returned.
+   * 
+   * @param value Raw value to decode
+   * @returns Decoded value
+   */
   decode(value: string): T {
     return value == null
       ? this._defaultValue
       : this._decode(value);
   }
 
+  /**
+   * Encodes a value for the type of this setting to a string that can be
+   * written to storage. If value is null or undefined, then the default value
+   * is encoded instead.
+   * 
+   * @param value Value to encode
+   * @returns Stringified version of value
+   */
   encode(value: T): string {
     return value == null
       ? this._encode(this._defaultValue)
       : this._encode(value);
   }
 
+  /**
+   * Notify this setting that it was updated to the given value. This will call
+   * all registered callbacks with the given value.
+   * 
+   * @param value Value that this setting was updated to.
+   */
   handleChange(value: T) {
     this._onChangeCallbacks?.forEach(cb => cb(value));
   }
@@ -33,6 +57,9 @@ export abstract class StoredSetting<T> {
 
 //#region Setting Types
 
+/**
+ * Spec for a boolean setting that can sync with storage.
+ */
 export class StoredBoolean extends StoredSetting<boolean> {
   constructor(defaultValue: boolean, callbacks?: readonly OnChangeCallback<boolean>[]) {
     super(defaultValue, callbacks);
@@ -49,6 +76,9 @@ export class StoredBoolean extends StoredSetting<boolean> {
   }
 }
 
+/**
+ * Spec for a number (integer/float) setting that can sync with storage.
+ */
 export class StoredNumber extends StoredSetting<number> {
   constructor(defaultValue: number, callbacks?: readonly OnChangeCallback<number>[]) {
     super(defaultValue, callbacks);
@@ -64,6 +94,9 @@ export class StoredNumber extends StoredSetting<number> {
   }
 }
 
+/**
+ * Spec for a bigint setting that can sync with storage.
+ */
 export class StoredBigint extends StoredSetting<bigint> {
   constructor(defaultValue: bigint, callbacks?: readonly OnChangeCallback<bigint>[]) {
     super(defaultValue, callbacks);
@@ -82,6 +115,9 @@ export class StoredBigint extends StoredSetting<bigint> {
   }
 }
 
+/**
+ * Spec for a string setting that can sync with storage.
+ */
 export class StoredString extends StoredSetting<string> {
   constructor(defaultValue: string, callbacks?: readonly OnChangeCallback<string>[]) {
     super(defaultValue, callbacks);
@@ -96,6 +132,11 @@ export class StoredString extends StoredSetting<string> {
   }
 }
 
+/**
+ * Spec for a JSON setting that can sync with storage. Note that JSON structure
+ * must be compatible with `JSON.parse()` and `JSON.stringify()` in order to
+ * work (e.g. objects containing bigints will fail to write).
+ */
 export class StoredJson<T extends object> extends StoredSetting<T> {
   constructor(defaultValue: T, callbacks?: readonly OnChangeCallback<T>[]) {
     super(defaultValue, callbacks);
