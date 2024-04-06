@@ -1,7 +1,5 @@
 export default interface MockSettings {
+  boolean: boolean;
   string: string;
-  number: number;
-  bigint: bigint;
-  object: object;
-  array: string[];
+  numbers: number[];
 }
