@@ -39,7 +39,9 @@ export class StoredBoolean extends StoredSetting<boolean> {
   }
 
   protected _decode(value: string): boolean {
-    return value === "true";
+    if (value === "true") return true;
+    if (value === "false") return false;
+    return this._defaultValue;
   }
 
   protected _encode(value: boolean): string {
@@ -70,8 +72,7 @@ export class StoredBigint extends StoredSetting<bigint> {
   protected _decode(value: string): bigint {
     try {
       return BigInt(value);
-    } catch (e) {
-      console.error(e);
+    } catch (_) {
       return this._defaultValue;
     }
   }
@@ -103,9 +104,7 @@ export class StoredJson<T extends object> extends StoredSetting<T> {
   protected _decode(value: string): T {
     try {
       return JSON.parse(value);
-    } catch (e) {
-      console.error();
-
+    } catch (_) {
       return this._defaultValue;
     }
   }
