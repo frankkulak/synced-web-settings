@@ -1,19 +1,13 @@
 import { StoredSettings, StoredSettingsBuilder } from "./stored-types";
 import { SubscriptionManager } from "./subscriptions";
 
-export interface StorageType {
-  getItem(key: string): string;
-  setItem(key: string, value: string): void;
-  removeItem(key: string): void;
-}
-
 export class SettingsRespository<SettingsType extends object> {
   public readonly settings: SettingsType;
   public readonly subscriptions = new SubscriptionManager<SettingsType>();
 
   constructor(options: {
     prefix?: string;
-    storage: StorageType;
+    storage: Storage;
     settings: StoredSettingsBuilder<SettingsType>;
   }) {
     // creating settings object
@@ -21,7 +15,6 @@ export class SettingsRespository<SettingsType extends object> {
     for (const settingName in options.settings) {
       const builder = options.settings[settingName];
       settings[settingName] = new builder.type(
-        settingName,
         builder.defaultValue,
         builder.callbacks
       );

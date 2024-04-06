@@ -125,7 +125,6 @@ export type StoredSettings<SettingsType extends object> = {
 export type StoredSettingsBuilder<SettingsType extends object> = {
   [T in keyof SettingsType]: {
     type: new (
-      name: string,
       defaultValue: SettingsType[T],
       callbacks?: readonly OnChangeCallback<SettingsType[T]>[]
     ) => StoredSetting<SettingsType[T]>,
