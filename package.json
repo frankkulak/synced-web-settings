@@ -1,16 +1,22 @@
 {
   "name": "synced-web-settings",
   "version": "1.0.0",
-  "description": "Simple package to help with reactive settings on the web.",
-  "keywords": [],
+  "description": "Tiny package to make syncing settings with browser storage easier.",
+  "keywords": [
+    "settings",
+    "web",
+    "browser",
+    "localstorage",
+    "sessionstorage"
+  ],
   "author": "frankkulak",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/frankkulak/web-settings.git"
+    "url": "https://github.com/frankkulak/synced-web-settings.git"
   },
   "bugs": {
-    "url": "https://github.com/frankkulak/web-settings/issues"
+    "url": "https://github.com/frankkulak/synced-web-settings/issues"
   },
   "main": "index.js",
   "scripts": {
