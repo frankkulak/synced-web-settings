@@ -2,7 +2,7 @@ import { StoredSettings, StoredSettingsBuilder } from "./stored-types";
 import { SubscriptionManager } from "./subscriptions";
 
 /**
- * Repository of settings that are synced with the same storage container.
+ * Repository of settings that are synced with a storage container.
  */
 export class SettingsRespository<SettingsType extends object> {
   /** Settings synced with storage. */
