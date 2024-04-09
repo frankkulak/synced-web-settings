@@ -158,15 +158,17 @@ const unsub = repo.subscriptions.subscribe("someBool", (value) => {
 unsub();
 ```
 
-Tip: If you use Svelte like me, here's a common pattern I use to manage
-subscriptions within components:
+As shorthand for multiple subscriptions that are related, use a batch:
 ```ts
-const subscriptions = [
-  repo.subscriptions.subscribe("foo", (value) => { /* stuff... */ }),
-  repo.subscriptions.subscribe("bar", (value) => { /* stuff... */ }),
-];
+const unsub = repo.subscriptions.batchSubscribe(
+  someBool: (value) => {
+    // do stuff with the boolean
+  },
+  someNum: (value) => {
+    // do stuff with the number
+  }
+);
 
-onDestroy(() => {
-  subscriptions.forEach(unsub => unsub());
-});
+// unsubscribes all of the above at once
+unsub();
 ```

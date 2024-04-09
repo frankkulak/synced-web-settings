@@ -28,6 +28,35 @@ describe("SubscriptionManager", () => {
     });
   });
 
+  describe("#batchSubscribe()", () => {
+    it("should add subscribers for all provided settings", () => {
+      let boolCalled = false, numberCalled = false;
+      manager.batchSubscribe({
+        boolean: (_) => boolCalled = true,
+        number: (_) => numberCalled = true,
+      });
+      expect(boolCalled).to.be.false;
+      expect(numberCalled).to.be.false;
+      manager.notifySubscribers("boolean", false);
+      manager.notifySubscribers("number", 5);
+      expect(boolCalled).to.be.true;
+      expect(numberCalled).to.be.true;
+    });
+
+    it("should return a function that cancels all created subscriptions when called", () => {
+      let boolCalled = false, numberCalled = false;
+      const unsub = manager.batchSubscribe({
+        boolean: (_) => boolCalled = true,
+        number: (_) => numberCalled = true,
+      });
+      unsub();
+      manager.notifySubscribers("boolean", false);
+      manager.notifySubscribers("number", 5);
+      expect(boolCalled).to.be.false;
+      expect(numberCalled).to.be.false;
+    });
+  });
+
   describe("#notifySubscribers()", () => {
     it("should call each matching subscriber's onChange() function", () => {
       let string1 = false, string2 = false;

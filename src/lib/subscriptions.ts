@@ -22,11 +22,27 @@ export class SubscriptionManager<SettingsType extends object> {
    */
   subscribe<SettingName extends keyof SettingsType>(
     setting: SettingName,
-    onChange: (value: SettingsType[SettingName]) => void
+    onChange: (value: SettingsType[SettingName]) => void,
   ): Unsubscriber {
     const id = this._nextId++;
     this._subscriptions.set(id, { setting, onChange });
     return () => this._subscriptions.delete(id);
+  }
+
+  /**
+   * Registers subscriptions for the specified settings, and returns a function
+   * that will unregister all of them when called.
+   * 
+   * @param subscriptions Mapping of settings to functions to call when updated
+   * @returns Function that cancels all specified subscriptions
+   */
+  batchSubscribe(subscriptions: Partial<{
+    [T in keyof SettingsType]: (value: SettingsType[T]) => void;
+  }>): Unsubscriber {
+    const unsubs: Unsubscriber[] = [];
+    for (let setting in subscriptions)
+      unsubs.push(this.subscribe(setting, subscriptions[setting]));
+    return () => unsubs.forEach(unsub => unsub());
   }
 
   /**
