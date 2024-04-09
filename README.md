@@ -51,7 +51,7 @@ Advantages over using storage directly:
 
 Create a `SettingsRespository` and define your settings:
 ```ts
-import { SettingsRespository, StoredBoolean } from "./dst/index";
+import { SettingsRespository, StoredBoolean } from "synced-web-settings";
 
 const repo = new SettingsRespository({
   prefix: "setting:", // optional; gets appended to setting name for key
