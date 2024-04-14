@@ -160,14 +160,14 @@ unsub();
 
 As shorthand for multiple subscriptions that are related, use a batch:
 ```ts
-const unsub = repo.subscriptions.batchSubscribe(
+const unsub = repo.subscriptions.batchSubscribe({
   someBool: (value) => {
     // do stuff with the boolean
   },
   someNum: (value) => {
     // do stuff with the number
   }
-);
+});
 
 // unsubscribes all of the above at once
 unsub();
